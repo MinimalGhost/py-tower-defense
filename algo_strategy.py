@@ -93,3 +93,15 @@ class AlgoStrategy(gamelib.AlgoCore):
                     funnel_point = [x, 13]
                     minPath = len(path)
         self.funnel_point = funnel_point
+
+    def towers_on_alternating_tiles(self, game_map):
+        """ Puts a TB on every other square for 13th column """
+        for x in range(0, game_map.boardSize):
+            if x % 2 == 0:
+                game_map.spawn_unit("TB", [x, 13])
+
+    def blocks_funnel(self, x, radius=None):
+        if radius is None:
+            radius = self.holeradius
+        funnel_x, _ = self.funnel_point
+        return abs(x - funnel_x) <= radius
