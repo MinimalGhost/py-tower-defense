@@ -156,3 +156,29 @@ class AlgoStrategy(gamelib.AlgoCore):
         horizontal_offsets = [-3, 1, 2, -4]
         for origin_point in [(x0 + x_offset, y0) for x_offset in horizontal_offsets]:
             self.build_offset_supports(origin_point, skip_build_points, game_map)
+
+    def funnel_to_self_destruct(self, origin, game_map):
+        unit_type = "TB"
+        i = 0
+        while game_map.can_afford(unit_type):
+            location = [origin[0] - 1, origin[1] - i]
+            if not game_map.is_in_bounds(location):
+                break
+            game_map.attempt_spawn(unit_type, location)
+            i += 1
+
+    def build_offset_supports(self, origin, dontBuildPoints, game_map):
+        unit_type = "TS"
+        i = 0
+        while game_map.can_afford(unit_type):
+            location = [int(origin[0] - i), int(origin[1] - i)]
+            if not gamelib.point_in_list(location, dontBuildPoints):
+                game_map.attempt_spawn(unit_type, location)
+            else:
+                break
+            i += 1
+
+
+if __name__ == "__main__":
+    algo = AlgoStrategy()
+    algo.start()
